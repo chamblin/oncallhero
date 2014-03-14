@@ -25,7 +25,10 @@ var game = new Phaser.Game(800, 640, Phaser.AUTO, '', { preload: preload,
 // stage
 var map;
 var layer;
-var cursors
+var readyScreenBitmap;
+var readyScreenLevelName;
+var readyScreenHelpText;
+var cursors;
 
 // sprites
 var hero;
@@ -38,9 +41,10 @@ var score = 0;
 var stop = false;
 var pointsRemaining;
 var levels = Array(
-  "levels/2.json"
-  //"levels/1.json", "levels/2.json"
+  //"levels/2.json"
+  "levels/1.json", "levels/2.json"
 );
+var onReadyScreen = false;
 
 var currentLevel = 0;
 
@@ -101,6 +105,26 @@ function loadLevel(resourceName){
   seconds = parseInt(map.properties.seconds);
   pointsRemaining = possiblePoints;
 
+  readyScreen();
+}
+
+function readyScreen(){
+  stop = true;
+  onReadyScreen = true;
+  readyScreenBitmap = game.add.graphics(0, 0);
+  readyScreenBitmap.beginFill(0);
+  readyScreenBitmap.drawRect(0, 0, 900, 800);
+  readyScreenLevelName = game.add.text(16, 16, 'Level ' + (currentLevel + 1), { font: '32px arial', fill: '#FFFFFF'});
+  var text = map.properties.text || "";
+  readyScreenHelpText = game.add.text(16, 64, text + "\n\nPress Space to Begin", {font: '12px arial', fill: '#FFFFFF'});
+}
+
+function beginLevel(){
+  readyScreenHelpText.destroy();
+  readyScreenLevelName.destroy();
+  readyScreenBitmap.destroy();
+  stop = false;
+  onReadyScreen = false;
   levelBegin = game.time.now;
 }
 
@@ -133,7 +157,12 @@ function update() {
   game.physics.overlap(hero, pager, win);
 
   hero.body.velocity.x = 0;
-  if(!stop){
+  if(onReadyScreen && stop){
+    if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)){
+      beginLevel();
+    }
+  }
+  else if(!stop){
     if (cursors.left.isDown){
       hero.body.velocity.x = -150;
     }
@@ -153,22 +182,22 @@ function update() {
   }
 }
 
+var rect = new Phaser.Rectangle( 100, 100, 100, 100 ) ;
 function render() {
-  game.debug.renderRectangle(hero.body.polygon);
+  game.debug.renderRectangle(rect, 'rgba(255,0,0,1)');
 }
 
 function win(){
-  stop = true;
   score += pointsRemaining;
   pager.kill();
 
   currentLevel += 1;
   if(currentLevel >= levels.length){
     alert("OUT OF LEVELS, YOUR SCORE WAS " + score);
+    stop = true;
   }
   else{
     loadLevel("level" + currentLevel);
-    stop = false;
   }
 }
 

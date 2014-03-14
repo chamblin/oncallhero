@@ -52,7 +52,7 @@
                  "visible":true,
                  "width":0,
                  "x":544,
-                 "y":128
+                 "y":96
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -342,7 +342,8 @@
  "properties":
     {
      "possiblePoints":"25000",
-     "seconds":"15"
+     "seconds":"15",
+     "text":"Besides your boss, spikes will also kill you.  Avoid them."
     },
  "tileheight":32,
  "tilesets":[

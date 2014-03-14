@@ -65,13 +65,14 @@
  "properties":
     {
      "possiblePoints":"10000",
-     "seconds":"8"
+     "seconds":"8",
+     "text":"Welcome to your first on-call.  Get to the pager before it escalates to your boss!"
     },
  "tileheight":32,
  "tilesets":[
         {
          "firstgid":1,
-         "image":"..\/assets\/Ground.png",
+         "image":"..\/..\/..\/..\/..\/..\/media\/sf_dev\/u\/on-call-hero\/assets\/Ground.png",
          "imageheight":32,
          "imagewidth":32,
          "margin":0,
@@ -93,9 +94,9 @@
         }, 
         {
          "firstgid":2,
-         "image":"..\/assets\/Hero.png",
-         "imageheight":32,
-         "imagewidth":32,
+         "image":"..\/..\/..\/..\/..\/..\/media\/sf_dev\/u\/on-call-hero\/assets\/Hero.png",
+         "imageheight":34,
+         "imagewidth":34,
          "margin":0,
          "name":"Hero",
          "properties":
@@ -108,9 +109,9 @@
         }, 
         {
          "firstgid":3,
-         "image":"..\/assets\/Pager.png",
+         "image":"..\/..\/..\/..\/..\/..\/media\/sf_dev\/u\/on-call-hero\/assets\/Pager.png",
          "imageheight":32,
-         "imagewidth":64,
+         "imagewidth":96,
          "margin":0,
          "name":"Pager",
          "properties":
