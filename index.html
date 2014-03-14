@@ -64,7 +64,7 @@ function preload() {
     game.load.tilemap("level" + i, levels[i], null, Phaser.Tilemap.TILED_JSON);
   }
   game.load.image("ground_1x1", "assets/Ground.png");
-  game.load.image("hero", "assets/Hero.png");
+  game.load.spritesheet("hero", "assets/Hero.png", 32, 32);
   game.load.image("spike", "assets/Spike.png");
   game.load.spritesheet("pager", "assets/Pager.png", 32, 32);
   game.load.audio("jump", "assets/jump.ogg");
@@ -141,6 +141,8 @@ function create(){
   hero = game.add.sprite(-1000, -1000, "hero");
   hero.body.bounce.y = 0.2;
   hero.body.collideWorldBounds = true;
+  hero.animations.add('left', [0,1], 5, true);
+  hero.animations.add('right', [3,4], 5, true);
 
   // configure pager
   pager = game.add.sprite(1000, 1000, "pager");
@@ -177,9 +179,15 @@ function update() {
   else if(!stop){
     if (cursors.left.isDown){
       hero.body.velocity.x = -150;
+      hero.animations.play("left");
     }
     else if (cursors.right.isDown){
       hero.body.velocity.x = 150;
+      hero.animations.play("right");
+    }
+    else{
+      hero.animations.stop();
+      hero.frame = 2;
     }
     if(cursors.up.isDown && hero.body.onFloor() && !hero.body.onWall()){
       jumpSound.play();
