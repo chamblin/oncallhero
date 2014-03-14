@@ -38,6 +38,7 @@ var hero;
 var pager;
 var spikes;
 var scoreText;
+var remainingText;
 
 // game state
 var score = 0;
@@ -155,8 +156,8 @@ function create(){
   game.physics.gravity.y = 300;
   cursors = game.input.keyboard.createCursorKeys();
 
-  scoreText = game.add.text(16, 16, 'score: 0', { font: '32px arial', fill: '#313131'});
-
+  remainingText = game.add.text(16, 16, 'remaining: 0', { font: '32px arial', fill: '#313131'});
+  scoreText = game.add.text(16, 48, 'score: 0', { font: '12px arial', fill: '#313131'});
   loadLevel("level0");
 }
 
@@ -190,18 +191,18 @@ function update() {
     if(pointsRemaining <= 0){
       lose();
     }
-    scoreText.content = "Remaining: " + ((pointsRemaining > 0) ? pointsRemaining : 0);
+    remainingText.content = "remaining: " + ((pointsRemaining > 0) ? pointsRemaining : 0);
+    scoreText.content = "score: " + score;
   }
 }
 
-var rect = new Phaser.Rectangle( 100, 100, 100, 100 ) ;
 function render() {
-  game.debug.renderRectangle(rect, 'rgba(255,0,0,1)');
 }
 
 function win(){
   winSound.play();
   score += pointsRemaining;
+  scoreText.content = "score: " + score;
   pager.kill();
 
   currentLevel += 1;
