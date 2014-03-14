@@ -64,7 +64,8 @@
  "orientation":"orthogonal",
  "properties":
     {
-
+     "possiblePoints":"10000",
+     "seconds":"8"
     },
  "tileheight":32,
  "tilesets":[
