@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="25" height="20" tilewidth="32" tileheight="32">
- <tileset firstgid="1" name="och" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="Ground" tilewidth="32" tileheight="32">
   <image source="../assets/Ground.png" width="32" height="32"/>
   <tile id="0">
    <properties>
@@ -20,9 +20,9 @@
   </data>
  </layer>
  <objectgroup name="Hero" width="25" height="20">
-  <object gid="2" x="35" y="608"/>
+  <object gid="2" x="11" y="596"/>
  </objectgroup>
  <objectgroup name="Pager" width="25" height="20">
-  <object gid="3" x="702" y="605"/>
+  <object gid="3" x="754" y="601"/>
  </objectgroup>
 </map>

@@ -36,30 +36,47 @@ var levelBegin;
 var scoreText;
 var stop = false;
 
-function create() {
-  map = game.add.tilemap("level1");
-  map.addTilesetImage('och', 'ground_1x1');
+function loadLevel(resourceName){
+  map = game.add.tilemap(resourceName);
+  map.addTilesetImage('Ground', 'ground_1x1');
   layer = map.createLayer("Ground");
-
-  // awesome way to make all ground tiles collidable
   map.setCollisionByExclusion([], true, layer);
 
+  // find hero/pager
+  var heroX = map.objects.Hero[0].x;
+  var heroY = map.objects.Hero[0].y;
+
+  var pagerX = map.objects.Pager[0].x;
+  var pagerY = map.objects.Pager[0].y;
+
   // create hero
-  hero = game.add.sprite(70, game.world.height - 90, "hero");
-  hero.body.bounce.y = 0.2;
-  hero.body.collideWorldBounds = true;
+  hero = game.add.sprite(heroX, heroY, "hero");
+  hero.y -= hero.height;
 
   // create pager
-  pager = game.add.sprite(game.world.width - 70, game.world.height - 180, "pager");
-  pager.body.bounce.y = 0.5;
 
-  game.physics.gravity.y = 300;
-  cursors = game.input.keyboard.createCursorKeys();
+  pager = game.add.sprite(pagerX, pagerY, "pager");
+  pager.y -= pager.height;
 
   // level parameters
   pointsRemaining = possiblePoints;
 
   levelBegin = game.time.now;
+}
+
+function create() {
+  loadLevel("level1");
+
+  // configure hero
+  hero.body.bounce.y = 0.2;
+  hero.body.collideWorldBounds = true;
+
+  // configure pager
+  pager.body.bounce.y = 0.5;
+
+  game.physics.gravity.y = 300;
+  cursors = game.input.keyboard.createCursorKeys();
+
   scoreText = game.add.text(16, 16, 'score: 0', { font: '32px arial', fill: '#313131'});
 }
 

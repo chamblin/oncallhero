@@ -26,8 +26,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":35,
-                 "y":608
+                 "x":11,
+                 "y":596
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -51,8 +51,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":702,
-                 "y":605
+                 "x":754,
+                 "y":601
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -74,7 +74,7 @@
          "imageheight":32,
          "imagewidth":32,
          "margin":0,
-         "name":"och",
+         "name":"Ground",
          "properties":
             {
 
