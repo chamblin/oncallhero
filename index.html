@@ -45,8 +45,8 @@ var score = 0;
 var stop = false;
 var pointsRemaining;
 var levels = Array(
-  "levels/2.json"
-  //"levels/1.json", "levels/2.json"
+  //"levels/2.json"
+  "levels/1.json", "levels/2.json"
 );
 var onReadyScreen = false;
 
@@ -103,7 +103,6 @@ function loadLevel(resourceName){
       function(spike){
         var s = game.add.sprite(spike.x, spike.y, "spike");
         s.body.collideWorldBounds = true;
-        s.body.setRectangle(4, 30, 14, 1);
         spikes.add(s);
       }
     );
@@ -113,6 +112,11 @@ function loadLevel(resourceName){
   seconds = parseInt(map.properties.seconds);
   pointsRemaining = possiblePoints;
 
+  if(spikes){
+    spikes.forEach(function(spike){
+      spike.body.setRectangle(4, 30, 14, 1);
+    });
+  }
   readyScreen();
 }
 
