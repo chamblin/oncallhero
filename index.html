@@ -15,23 +15,40 @@
 <script type="text/javascript">
 
 
-var game = new Phaser.Game(800, 640, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+var game = new Phaser.Game(800, 640, Phaser.AUTO, '', { preload: preload,
+                                                        create: create,
+                                                        update: update,
+                                                        render: render
+                                                      });
+
+
+// stage
 var map;
 var layer;
+var cursors
+
+// sprites
 var hero;
 var pager;
-var cursors;
+var spikes;
+var scoreText;
+
+// game state
+var score = 0;
+var stop = false;
 var pointsRemaining;
+var levels = Array(
+  "levels/2.json"
+  //"levels/1.json", "levels/2.json"
+);
+
+var currentLevel = 0;
+
+// level
 var seconds;
 var possiblePoints;
 var levelBegin;
-var scoreText;
-var score = 0;
-var stop = false;
-var levels = Array(
-  "levels/1.json", "levels/2.json"
-);
-var currentLevel = 0;
+
 
 function preload() {
   game.stage.backgroundColor = "#7ec0ee";
@@ -40,6 +57,7 @@ function preload() {
   }
   game.load.image("ground_1x1", "assets/Ground.png");
   game.load.image("hero", "assets/Hero.png");
+  game.load.image("spike", "assets/Spike.png");
   game.load.spritesheet("pager", "assets/Pager.png", 32, 32);
 }
 
@@ -66,6 +84,20 @@ function loadLevel(resourceName){
   pager.x = pagerX
   pager.y = pagerY - pager.height;
 
+  if(spikes){ spikes.destroy(); } // kill spikes before setting up level
+
+  if(map.objects.Spikes){
+    spikes = game.add.group();
+    map.objects.Spikes.map(
+      function(spike){
+        var s = game.add.sprite(spike.x, spike.y, "spike");
+        s.body.collideWorldBounds = true;
+        s.body.setRectangle(4, 32, 14, 0); // tweak hitbox
+        spikes.add(s);
+      }
+    );
+    spikes.immovable = true;
+  }
   // level parameters
   possiblePoints = parseInt(map.properties.possiblePoints);
   seconds = parseInt(map.properties.seconds);
@@ -84,6 +116,8 @@ function create(){
   // configure pager
   pager = game.add.sprite(1000, 1000, "pager");
   pager.body.bounce.y = 0.5;
+  pager.animations.add('paging', [0,1,2], 10, true);
+  pager.animations.play('paging');
 
   game.physics.gravity.y = 300;
   cursors = game.input.keyboard.createCursorKeys();
@@ -96,6 +130,8 @@ function create(){
 function update() {
   game.physics.collide(layer, hero);
   game.physics.collide(layer, pager);
+  game.physics.collide(spikes, layer);
+  game.physics.overlap(hero, spikes, lose);
   game.physics.overlap(hero, pager, win);
 
   hero.body.velocity.x = 0;
@@ -119,6 +155,8 @@ function update() {
   }
 }
 
+function render() {}
+
 function win(){
   stop = true;
   score += pointsRemaining;
@@ -137,7 +175,7 @@ function win(){
 function lose(){
   stop = true;
   hero.kill();
-  alert("LOSE");
+  alert("LOSE, YOUR SCORE WAS " + score);
 }
 
 

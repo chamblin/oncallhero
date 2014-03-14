@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="25" height="20" tilewidth="32" tileheight="32">
  <properties>
-  <property name="possiblePoints" value="25000"/>
-  <property name="seconds" value="15"/>
+  <property name="possiblePoints" value="10000"/>
+  <property name="seconds" value="30"/>
  </properties>
  <tileset firstgid="1" name="Ground" tilewidth="32" tileheight="32">
   <image source="../assets/Ground.png" width="32" height="32"/>
@@ -23,34 +23,18 @@
  </tileset>
  <layer name="Ground" width="25" height="20" opacity="0.9">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFww0wDrQDhhBgZBgNL3yAkWE0jMgBo2GGCdDDhBZhxIgDDwaAz03Uci8ANQQAGw==
+   eJxjYBgFo2AUjIJRMJgBIxSji1HTfGR7kDE1zKamW4cqwBa21MYAIHgAJQ==
   </data>
  </layer>
  <objectgroup name="Hero" width="25" height="20">
-  <object gid="2" x="32" y="598"/>
+  <object gid="2" x="11" y="596"/>
  </objectgroup>
  <objectgroup name="Pager" width="25" height="20">
-  <object gid="3" x="544" y="128"/>
+  <object gid="3" x="754" y="601"/>
  </objectgroup>
  <objectgroup name="Spikes" width="25" height="20">
-  <object gid="5" x="128" y="640"/>
-  <object gid="5" x="160" y="640"/>
-  <object gid="5" x="192" y="640"/>
-  <object gid="5" x="352" y="640"/>
-  <object gid="5" x="384" y="640"/>
-  <object gid="5" x="448" y="640"/>
-  <object gid="5" x="416" y="640"/>
-  <object gid="5" x="480" y="640"/>
-  <object gid="5" x="544" y="640"/>
-  <object gid="5" x="512" y="640"/>
-  <object gid="5" x="576" y="640"/>
-  <object gid="5" x="640" y="640"/>
-  <object gid="5" x="704" y="640"/>
-  <object gid="5" x="736" y="640"/>
-  <object gid="5" x="768" y="640"/>
-  <object gid="5" x="672" y="640"/>
-  <object gid="5" x="608" y="640"/>
-  <object gid="5" x="416" y="544"/>
-  <object gid="5" x="448" y="544"/>
+  <object gid="5" x="448" y="480"/>
+  <object gid="5" x="480" y="480"/>
+  <object gid="5" x="512" y="480"/>
  </objectgroup>
 </map>
