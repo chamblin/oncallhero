@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>On Call Hero - A Game About PagerDuty</title>
+	<script type="text/javascript" src="phaser.min.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<script type="text/javascript">
+
+
+var game = new Phaser.Game(800, 640, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+
+function preload() {
+  game.stage.backgroundColor = "#7ec0ee";
+  game.load.tilemap("level1", "levels/1.json", null, Phaser.Tilemap.TILED_JSON);
+  game.load.image("ground_1x1", "assets/Ground.png");
+  game.load.image("hero", "assets/Hero.png");
+  game.load.spritesheet("pager", "assets/Pager.png", 32, 32);
+}
+
+var map;
+var layer;
+var hero;
+var cursors;
+var pointsRemaining;
+var seconds = 8;
+var possiblePoints = 255181;
+var levelBegin;
+var scoreText;
+var stop = false;
+
+function create() {
+  map = game.add.tilemap("level1");
+  map.addTilesetImage('och', 'ground_1x1');
+  layer = map.createLayer("Ground");
+
+  // awesome way to make all ground tiles collidable
+  map.setCollisionByExclusion([], true, layer);
+
+  // create hero
+  hero = game.add.sprite(70, game.world.height - 90, "hero");
+  hero.body.bounce.y = 0.2;
+  hero.body.collideWorldBounds = true;
+
+  // create pager
+  pager = game.add.sprite(game.world.width - 70, game.world.height - 180, "pager");
+  pager.body.bounce.y = 0.5;
+
+  game.physics.gravity.y = 300;
+  cursors = game.input.keyboard.createCursorKeys();
+
+  // level parameters
+  pointsRemaining = possiblePoints;
+
+  levelBegin = game.time.now;
+  scoreText = game.add.text(16, 16, 'score: 0', { font: '32px arial', fill: '#313131'});
+}
+
+function update() {
+  game.physics.collide(layer, hero);
+  game.physics.collide(layer, pager);
+  game.physics.overlap(hero, pager, win);
+
+  hero.body.velocity.x = 0;
+  if(!stop){
+    if (cursors.left.isDown){
+      hero.body.velocity.x = -150;
+    }
+    else if (cursors.right.isDown){
+      hero.body.velocity.x = 150;
+    }
+    if(cursors.up.isDown && hero.body.onFloor() && !hero.body.onWall()){
+      hero.body.velocity.y = 1200;
+    }
+
+    var millisSince = game.time.elapsedSince(levelBegin);
+    pointsRemaining = Math.floor(possiblePoints * (((seconds * 1000) - millisSince)/(seconds * 1000)));
+    if(pointsRemaining <= 0){
+      lose();
+    }
+    scoreText.content = "Remaining: " + pointsRemaining;
+  }
+}
+
+function win(){
+  stop = true;
+  pager.kill();
+  alert("WIN");
+}
+
+function lose(){
+  stop = true;
+  hero.kill();
+  alert("LOSE");
+}
+
+
+</script>
+
+</body>
+</html>
