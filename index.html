@@ -15,7 +15,7 @@
 <script type="text/javascript">
 
 
-var game = new Phaser.Game(800, 640, Phaser.AUTO, '', { preload: preload,
+var game = new Phaser.Game(800, 640, Phaser.CANVAS, '', { preload: preload,
                                                         create: create,
                                                         update: update,
                                                         render: render
@@ -45,8 +45,8 @@ var score = 0;
 var stop = false;
 var pointsRemaining;
 var levels = Array(
-  //"levels/2.json"
-  "levels/1.json", "levels/2.json"
+  "levels/2.json"
+  //"levels/1.json", "levels/2.json"
 );
 var onReadyScreen = false;
 
@@ -103,6 +103,7 @@ function loadLevel(resourceName){
       function(spike){
         var s = game.add.sprite(spike.x, spike.y, "spike");
         s.body.collideWorldBounds = true;
+        s.body.setRectangle(4, 30, 14, 1);
         spikes.add(s);
       }
     );
@@ -143,6 +144,7 @@ function create(){
   hero.body.collideWorldBounds = true;
   hero.animations.add('left', [0,1], 5, true);
   hero.animations.add('right', [3,4], 5, true);
+  hero.body.setRectangle(16, 32, 8, 0);
 
   // configure pager
   pager = game.add.sprite(1000, 1000, "pager");
@@ -205,6 +207,12 @@ function update() {
 }
 
 function render() {
+  /*
+  COLLISION DETECTION DEBUGGIN
+  game.debug.renderRectangle(hero.body);
+  spikes.forEachAlive(function(spike){
+    game.debug.renderRectangle(spike.body);
+  });*/
 }
 
 function win(){
