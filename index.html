@@ -92,11 +92,9 @@ function loadLevel(resourceName){
       function(spike){
         var s = game.add.sprite(spike.x, spike.y, "spike");
         s.body.collideWorldBounds = true;
-        s.body.setRectangle(24, 32, 4, 0); // tweak hitbox
         spikes.add(s);
       }
     );
-    spikes.immovable = true;
   }
   // level parameters
   possiblePoints = parseInt(map.properties.possiblePoints);
@@ -112,7 +110,6 @@ function create(){
   hero = game.add.sprite(-1000, -1000, "hero");
   hero.body.bounce.y = 0.2;
   hero.body.collideWorldBounds = true;
-  hero.body.setRectangle(24, 28, 4, 4);
 
   // configure pager
   pager = game.add.sprite(1000, 1000, "pager");
