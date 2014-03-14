@@ -29,6 +29,7 @@ var readyScreenBitmap;
 var readyScreenLevelName;
 var readyScreenHelpText;
 var cursors;
+var jumpSound;
 
 // sprites
 var hero;
@@ -63,6 +64,7 @@ function preload() {
   game.load.image("hero", "assets/Hero.png");
   game.load.image("spike", "assets/Spike.png");
   game.load.spritesheet("pager", "assets/Pager.png", 32, 32);
+  game.load.audio("jump", "assets/jump.ogg");
 }
 
 function loadLevel(resourceName){
@@ -141,6 +143,9 @@ function create(){
   pager.animations.add('paging', [0,1,2], 10, true);
   pager.animations.play('paging');
 
+  // set up sfx
+  jumpSound = game.add.audio("jump");
+
   game.physics.gravity.y = 300;
   cursors = game.input.keyboard.createCursorKeys();
 
@@ -170,6 +175,7 @@ function update() {
       hero.body.velocity.x = 150;
     }
     if(cursors.up.isDown && hero.body.onFloor() && !hero.body.onWall()){
+      jumpSound.play();
       hero.body.velocity.y = 1200;
     }
 
