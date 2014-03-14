@@ -30,6 +30,8 @@ var readyScreenLevelName;
 var readyScreenHelpText;
 var cursors;
 var jumpSound;
+var winSound;
+var loseSound;
 
 // sprites
 var hero;
@@ -65,6 +67,8 @@ function preload() {
   game.load.image("spike", "assets/Spike.png");
   game.load.spritesheet("pager", "assets/Pager.png", 32, 32);
   game.load.audio("jump", "assets/jump.ogg");
+  game.load.audio("win", "assets/win.ogg");
+  game.load.audio("lose", "assets/die.ogg");
 }
 
 function loadLevel(resourceName){
@@ -145,6 +149,8 @@ function create(){
 
   // set up sfx
   jumpSound = game.add.audio("jump");
+  winSound = game.add.audio("win");
+  loseSound = game.add.audio("lose");
 
   game.physics.gravity.y = 300;
   cursors = game.input.keyboard.createCursorKeys();
@@ -194,6 +200,7 @@ function render() {
 }
 
 function win(){
+  winSound.play();
   score += pointsRemaining;
   pager.kill();
 
@@ -208,6 +215,7 @@ function win(){
 }
 
 function lose(){
+  loseSound.play();
   stop = true;
   hero.kill();
   alert("LOSE, YOUR SCORE WAS " + score);
