@@ -142,16 +142,18 @@ function beginLevel(){
 
 function create(){
 
+  game.physics.startSystem(Phaser.Physics.ARCADE);
   // configure hero
   hero = game.add.sprite(-1000, -1000, "hero");
+  game.physics.enable(hero);
   hero.body.bounce.y = 0.2;
   hero.body.collideWorldBounds = true;
   hero.animations.add('left', [0,1], 5, true);
   hero.animations.add('right', [3,4], 5, true);
-  hero.body.setRectangle(16, 32, 8, 0);
 
   // configure pager
   pager = game.add.sprite(1000, 1000, "pager");
+  game.physics.enable(pager);
   pager.body.bounce.y = 0.5;
   pager.animations.add('paging', [0,1,2], 10, true);
   pager.animations.play('paging');
@@ -161,7 +163,7 @@ function create(){
   winSound = game.add.audio("win");
   loseSound = game.add.audio("lose");
 
-  game.physics.gravity.y = 300;
+  game.physics.arcade.gravity.y = 300;
   cursors = game.input.keyboard.createCursorKeys();
 
   remainingText = game.add.text(16, 16, 'remaining: 0', { font: '32px arial', fill: '#313131'});
@@ -170,11 +172,11 @@ function create(){
 }
 
 function update() {
-  game.physics.collide(layer, hero);
-  game.physics.collide(layer, pager);
-  game.physics.collide(spikes, layer);
-  game.physics.overlap(hero, spikes, lose);
-  game.physics.overlap(hero, pager, win);
+  game.physics.arcade.collide(layer, hero);
+  game.physics.arcade.collide(layer, pager);
+  game.physics.arcade.collide(spikes, layer);
+  //game.physics.overlap(hero, spikes, lose);
+  //game.physics.overlap(hero, pager, win);
 
   hero.body.velocity.x = 0;
   if(onReadyScreen && stop){
@@ -195,9 +197,9 @@ function update() {
       hero.animations.stop();
       hero.frame = 2;
     }
-    if(cursors.up.isDown && hero.body.onFloor() && !hero.body.onWall()){
+    if(cursors.up.isDown && hero.body.onFloor()){
       jumpSound.play();
-      hero.body.velocity.y = 1200;
+      hero.body.velocity.y = -250;
     }
 
     var millisSince = game.time.elapsedSince(levelBegin);
@@ -205,8 +207,8 @@ function update() {
     if(pointsRemaining <= 0){
       lose();
     }
-    remainingText.content = "remaining: " + ((pointsRemaining > 0) ? pointsRemaining : 0);
-    scoreText.content = "score: " + score;
+    remainingText.text = "remaining: " + ((pointsRemaining > 0) ? pointsRemaining : 0);
+    scoreText.text = "score: " + score;
   }
 }
 
