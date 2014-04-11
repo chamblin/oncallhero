@@ -47,6 +47,7 @@ var stop = false;
 var pointsRemaining;
 var levels = Array(
   "levels/1.json", "levels/2.json", "levels/3.json", "levels/4.json"
+  //"levels/5.json"
 );
 var onReadyScreen = false;
 
@@ -231,7 +232,7 @@ function update() {
       hero.animations.stop();
       hero.frame = 2;
     }
-    if(cursors.up.isDown && hero.body.onFloor()){
+    if((cursors.up.isDown || game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) && hero.body.onFloor()){
       jumpSound.play();
       hero.body.velocity.y = -250;
     }
