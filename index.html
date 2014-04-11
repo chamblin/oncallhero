@@ -46,8 +46,7 @@ var score = 0;
 var stop = false;
 var pointsRemaining;
 var levels = Array(
-  "levels/1.json", "levels/2.json", "levels/3.json", "levels/4.json"
-  //"levels/5.json"
+  "levels/1.json", "levels/2.json", "levels/3.json", "levels/4.json", "levels/5.json"
 );
 var onReadyScreen = false;
 
@@ -85,7 +84,6 @@ function loadLevel(resourceName){
   map.setCollisionByExclusion([], true, layer);
 
   // find hero/pager
-  console.log(map.objects.Hero[0])
   var heroX = map.objects.Hero[0].x;
   var heroY = map.objects.Hero[0].y;
 
@@ -101,7 +99,7 @@ function loadLevel(resourceName){
   pager.x = pagerX
   pager.y = pagerY - pager.height;
 
-  // kill spikes before setting up level
+  // kill spikes and enemies before setting up level
   if(spikes){ spikes.destroy(); }
   if(enemies){ enemies.destroy(); }
 
