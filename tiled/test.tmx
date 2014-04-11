@@ -21,6 +21,9 @@
  <tileset firstgid="10" name="Spike" tilewidth="32" tileheight="32">
   <image source="../assets/Spike.png" width="32" height="32"/>
  </tileset>
+ <tileset firstgid="11" name="SpikesU" tilewidth="32" tileheight="32">
+  <image source="../assets/SpikeUpsideDown.png" width="32" height="32"/>
+ </tileset>
  <layer name="Ground" width="25" height="20" opacity="0.9">
   <data encoding="base64" compression="zlib">
    eJxjYBgFo2AUjIJRMJgBIxSji1HTfGR7kDE1zKamW4cqwBa21MYAIHgAJQ==
@@ -56,5 +59,19 @@
   <object gid="10" x="704" y="480"/>
   <object gid="10" x="736" y="480"/>
   <object gid="10" x="768" y="480"/>
+  <object gid="10" x="480" y="480"/>
+  <object gid="11" x="0" y="192"/>
+  <object gid="11" x="32" y="192"/>
+  <object gid="11" x="64" y="192"/>
+  <object gid="11" x="96" y="192"/>
+  <object gid="11" x="128" y="192"/>
+  <object gid="11" x="160" y="192"/>
+  <object gid="11" x="192" y="192"/>
+  <object gid="11" x="224" y="192"/>
+  <object gid="11" x="0" y="512"/>
+  <object gid="11" x="32" y="512"/>
+  <object gid="11" x="64" y="512"/>
+  <object gid="11" x="128" y="512"/>
+  <object gid="11" x="160" y="512"/>
  </objectgroup>
 </map>

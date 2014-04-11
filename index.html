@@ -45,7 +45,8 @@ var score = 0;
 var stop = false;
 var pointsRemaining;
 var levels = Array(
-  "levels/1.json", "levels/2.json", "levels/3.json"
+  //"levels/1.json", "levels/2.json", "levels/3.json"
+  "levels/test.json"
 );
 var onReadyScreen = false;
 
@@ -65,6 +66,7 @@ function preload() {
   game.load.image("ground_1x1", "assets/Ground.png");
   game.load.spritesheet("hero", "assets/Hero.png", 32, 32);
   game.load.image("spike", "assets/Spike.png");
+  game.load.image("spike_u", "assets/SpikeUpsideDown.png");
   game.load.spritesheet("pager", "assets/Pager.png", 32, 32);
   game.load.audio("jump", "assets/jump.ogg");
   game.load.audio("win", "assets/win.ogg");
@@ -96,15 +98,25 @@ function loadLevel(resourceName){
   pager.x = pagerX
   pager.y = pagerY - pager.height;
 
-  if(spikes){ spikes.destroy(); } // kill spikes before setting up level
+  // kill spikes before setting up level
+  if(spikes){ spikes.destroy(); }
 
   if(map.objects.Spikes){
     spikes = game.add.group();
     spikes.enableBody = true;
     map.createFromObjects('Spikes', 10, 'spike', 0, true, true, spikes);
+    map.createFromObjects('Spikes', 11, 'spike_u', 0, true, true, spikes);
     spikes.setAll("body.allowGravity", false);
+    spikes.setAll("body.immovable", true);
     spikes.forEach(function(spike){
-      spike.body.setSize(17, 28, 8, 4);
+      var isUpsideDown = !spike.body.onFloor();
+      if(isUpsideDown){
+        spike.body.setSize(17, 28, 8, -4);
+      }
+      else{
+        spike.body.setSize(17, 28, 8, 4);
+      }
+
     }, this);
   }
   // level parameters
