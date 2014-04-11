@@ -77,7 +77,7 @@ function loadLevel(resourceName){
   map.addTilesetImage('Ground', 'ground_1x1');
   if(layer){ layer.destroy(); }
   layer = map.createLayer("Ground");
-  layer.debug = true
+  //layer.debug = true
   map.setCollisionByExclusion([], true, layer);
 
   // find hero/pager
@@ -88,7 +88,6 @@ function loadLevel(resourceName){
   var pagerX = map.objects.Pager[0].x;
   var pagerY = map.objects.Pager[0].y;
 
-  testMove("beforeset");
   // position hero
   hero.x = heroX;
   hero.y = heroY - hero.height;
@@ -102,25 +101,19 @@ function loadLevel(resourceName){
 
   if(map.objects.Spikes){
     spikes = game.add.group();
-    map.objects.Spikes.map(
-      function(spike){
-        var s = game.add.sprite(spike.x, spike.y, "spike");
-        s.body.collideWorldBounds = true;
-        spikes.add(s);
-      }
-    );
+    spikes.enableBody = true;
+    map.createFromObjects('Spikes', 10, 'spike', 0, true, true, spikes);
+    spikes.setAll("body.allowGravity", false);
+    spikes.forEach(function(spike){
+      spike.body.setSize(17, 28, 8, 4);
+    }, this);
   }
   // level parameters
   possiblePoints = parseInt(map.properties.possiblePoints);
   seconds = parseInt(map.properties.seconds);
   pointsRemaining = possiblePoints;
 
-  if(spikes){
-    spikes.forEach(function(spike){
-      spike.body.setRectangle(4, 30, 14, 1);
-    });
-  }
-  //readyScreen();
+  readyScreen();
 }
 
 function readyScreen(){
@@ -151,13 +144,15 @@ function create(){
   game.physics.enable(hero);
   hero.body.bounce.y = 0.2;
   hero.body.collideWorldBounds = true;
+  hero.body.setSize(16, 28, 8, 4);
   hero.animations.add('left', [0,1], 5, true);
   hero.animations.add('right', [3,4], 5, true);
 
   // configure pager
   pager = game.add.sprite(1000, 1000, "pager");
   game.physics.enable(pager);
-  pager.body.bounce.y = 0.5;
+  pager.body.allowGravity = false;
+  pager.body.immovable = true;
   pager.animations.add('paging', [0,1,2], 10, true);
   pager.animations.play('paging');
 
@@ -178,8 +173,8 @@ function update() {
   game.physics.arcade.collide(layer, hero);
   game.physics.arcade.collide(layer, pager);
   game.physics.arcade.collide(spikes, layer);
-  //game.physics.overlap(hero, spikes, lose);
-  //game.physics.overlap(hero, pager, win);
+  game.physics.arcade.collide(hero, pager, win, null, this);
+  game.physics.arcade.collide(hero, spikes, lose, null, this);
 
   hero.body.velocity.x = 0;
   if(onReadyScreen && stop){
@@ -216,13 +211,11 @@ function update() {
 }
 
 function render() {
-  /*
-  COLLISION DETECTION DEBUGGIN
-  game.debug.renderRectangle(hero.body);
-  spikes.forEachAlive(function(spike){
-    game.debug.renderRectangle(spike.body);
-  });*/
-game.debug.renderRectangle(hero.body);
+  //COLLISION DETECTION DEBUGGIN
+  game.debug.body(hero);
+  /*spikes.forEach(function(spike){
+    game.debug.body(spike);
+  }, this);*/
 }
 
 function win(){
@@ -246,16 +239,6 @@ function lose(){
   stop = true;
   hero.kill();
   alert("LOSE, YOUR SCORE WAS " + score);
-}
-
-function testMove(identifier){
- function coords(){
-  return "(" + hero.x + "," + hero.y + ")";
- }
- var before = coords();
- hero.x = 90 + (parseInt(Math.random() * 10) - 4)
- hero.y = 90 + (parseInt(Math.random() * 10) - 4)
- console.log("[" + identifier + "] Before: " + before + ", After: " + coords());
 }
 
 
