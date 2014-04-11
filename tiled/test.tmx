@@ -26,7 +26,7 @@
  </tileset>
  <layer name="Ground" width="25" height="20" opacity="0.9">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2AUjIJRMJgBIxSji1HTfGR7kDE1zKamW4cqwBa21MYAIHgAJQ==
+   eJxjYBgFo2AUjIJRMApGwVAHAAfQAAE=
   </data>
  </layer>
  <objectgroup name="Hero" width="25" height="20">
@@ -35,43 +35,5 @@
  <objectgroup name="Pager" width="25" height="20">
   <object gid="7" x="754" y="601"/>
  </objectgroup>
- <objectgroup name="Spikes" width="25" height="20">
-  <object gid="10" x="448" y="480"/>
-  <object gid="10" x="480" y="480"/>
-  <object gid="10" x="512" y="480"/>
-  <object gid="10" x="352" y="480"/>
-  <object gid="10" x="320" y="480"/>
-  <object gid="10" x="288" y="480"/>
-  <object gid="10" x="256" y="480"/>
-  <object gid="10" x="224" y="480"/>
-  <object gid="10" x="192" y="480"/>
-  <object gid="10" x="160" y="480"/>
-  <object gid="10" x="128" y="480"/>
-  <object gid="10" x="96" y="480"/>
-  <object gid="10" x="64" y="480"/>
-  <object gid="10" x="32" y="480"/>
-  <object gid="10" x="0" y="480"/>
-  <object gid="10" x="576" y="480"/>
-  <object gid="10" x="576" y="480"/>
-  <object gid="10" x="640" y="480"/>
-  <object gid="10" x="608" y="480"/>
-  <object gid="10" x="672" y="480"/>
-  <object gid="10" x="704" y="480"/>
-  <object gid="10" x="736" y="480"/>
-  <object gid="10" x="768" y="480"/>
-  <object gid="10" x="480" y="480"/>
-  <object gid="11" x="0" y="192"/>
-  <object gid="11" x="32" y="192"/>
-  <object gid="11" x="64" y="192"/>
-  <object gid="11" x="96" y="192"/>
-  <object gid="11" x="128" y="192"/>
-  <object gid="11" x="160" y="192"/>
-  <object gid="11" x="192" y="192"/>
-  <object gid="11" x="224" y="192"/>
-  <object gid="11" x="0" y="512"/>
-  <object gid="11" x="32" y="512"/>
-  <object gid="11" x="64" y="512"/>
-  <object gid="11" x="128" y="512"/>
-  <object gid="11" x="160" y="512"/>
- </objectgroup>
+ <objectgroup name="Spikes" width="25" height="20"/>
 </map>

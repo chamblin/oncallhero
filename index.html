@@ -45,8 +45,7 @@ var score = 0;
 var stop = false;
 var pointsRemaining;
 var levels = Array(
-  //"levels/1.json", "levels/2.json", "levels/3.json"
-  "levels/test.json"
+  "levels/1.json", "levels/2.json", "levels/3.json"
 );
 var onReadyScreen = false;
 
@@ -217,8 +216,8 @@ function update() {
       lose();
     }
     remainingText.text = "remaining: " + ((pointsRemaining > 0) ? pointsRemaining : 0);
-    scoreText.text = "score: " + score;
   }
+  scoreText.text = "score: " + score;
 }
 
 function render() {
