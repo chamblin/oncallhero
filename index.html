@@ -77,15 +77,18 @@ function loadLevel(resourceName){
   map.addTilesetImage('Ground', 'ground_1x1');
   if(layer){ layer.destroy(); }
   layer = map.createLayer("Ground");
+  layer.debug = true
   map.setCollisionByExclusion([], true, layer);
 
   // find hero/pager
+  console.log(map.objects.Hero[0])
   var heroX = map.objects.Hero[0].x;
   var heroY = map.objects.Hero[0].y;
 
   var pagerX = map.objects.Pager[0].x;
   var pagerY = map.objects.Pager[0].y;
 
+  testMove("beforeset");
   // position hero
   hero.x = heroX;
   hero.y = heroY - hero.height;
@@ -117,7 +120,7 @@ function loadLevel(resourceName){
       spike.body.setRectangle(4, 30, 14, 1);
     });
   }
-  readyScreen();
+  //readyScreen();
 }
 
 function readyScreen(){
@@ -219,6 +222,7 @@ function render() {
   spikes.forEachAlive(function(spike){
     game.debug.renderRectangle(spike.body);
   });*/
+game.debug.renderRectangle(hero.body);
 }
 
 function win(){
@@ -242,6 +246,16 @@ function lose(){
   stop = true;
   hero.kill();
   alert("LOSE, YOUR SCORE WAS " + score);
+}
+
+function testMove(identifier){
+ function coords(){
+  return "(" + hero.x + "," + hero.y + ")";
+ }
+ var before = coords();
+ hero.x = 90 + (parseInt(Math.random() * 10) - 4)
+ hero.y = 90 + (parseInt(Math.random() * 10) - 4)
+ console.log("[" + identifier + "] Before: " + before + ", After: " + coords());
 }
 
 
