@@ -32,6 +32,9 @@ var cursors;
 var jumpSound;
 var winSound;
 var loseSound;
+var gameOverBitmap;
+var gameOverText;
+var gameOverScore;
 
 // sprites
 var hero;
@@ -46,9 +49,10 @@ var score = 0;
 var stop = false;
 var pointsRemaining;
 var levels = Array(
-  "levels/1.json", "levels/2.json", "levels/3.json", "levels/4.json", "levels/5.json"
+  "levels/1.json", "levels/2.json", "levels/3.json", "levels/4.json", "levels/5.json", "levels/6.json"
 );
 var onReadyScreen = false;
+var isGameOver = false;
 
 var currentLevel = 0;
 
@@ -190,9 +194,22 @@ function create(){
 
   game.physics.arcade.gravity.y = 300;
   cursors = game.input.keyboard.createCursorKeys();
-
   remainingText = game.add.text(16, 16, 'remaining: 0', { font: '32px arial', fill: '#313131'});
   scoreText = game.add.text(16, 48, 'score: 0', { font: '12px arial', fill: '#313131'});
+  reset();
+}
+
+function reset(){
+  if(gameOverBitmap){
+    gameOverBitmap.destroy();
+    gameOverText.destroy();
+    gameOverScore.destroy();
+  }
+  isGameOver = false;
+  hero.revive();
+  currentLevel = 0;
+  score = 0;
+  scoreText.text = "score: 0";
   loadLevel("level0");
 }
 
@@ -215,6 +232,11 @@ function update() {
   if(onReadyScreen && stop){
     if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)){
       beginLevel();
+    }
+  }
+  else if(isGameOver){
+    if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)){
+      reset();
     }
   }
   else if(!stop){
@@ -261,6 +283,16 @@ function render() {
   */
 }
 
+function gameOver(){
+  stop = true;
+  isGameOver = true;
+  gameOverBitmap = game.add.graphics(0, 0);
+  gameOverBitmap.beginFill(0);
+  gameOverBitmap.drawRect(0, 0, 900, 800);
+  gameOverText = game.add.text(16, 16, "GAME OVER", { font: '32px arial', fill: '#FFFFFF'});
+  gameOverScore = game.add.text(16, 64, "Your score: " + score + ". Press Space to Restart", {font: '12px arial', fill: '#FFFFFF'});
+}
+
 function win(){
   winSound.play();
   score += pointsRemaining;
@@ -269,8 +301,7 @@ function win(){
 
   currentLevel += 1;
   if(currentLevel >= levels.length){
-    alert("OUT OF LEVELS, YOUR SCORE WAS " + score);
-    stop = true;
+    gameOver();
   }
   else{
     loadLevel("level" + currentLevel);
@@ -279,9 +310,8 @@ function win(){
 
 function lose(){
   loseSound.play();
-  stop = true;
   hero.kill();
-  alert("LOSE, YOUR SCORE WAS " + score);
+  gameOver();
 }
 
 
