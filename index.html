@@ -46,9 +46,7 @@ var score = 0;
 var stop = false;
 var pointsRemaining;
 var levels = Array(
-  //"levels/4.json"
-  //"levels/1.json", "levels/2.json", "levels/3.json"
-  "levels/test.json"
+  "levels/1.json", "levels/2.json", "levels/3.json", "levels/4.json"
 );
 var onReadyScreen = false;
 
@@ -58,6 +56,7 @@ var currentLevel = 0;
 var seconds;
 var possiblePoints;
 var levelBegin;
+var enemySpeed = 100;
 
 
 function preload() {
@@ -129,7 +128,7 @@ function loadLevel(resourceName){
       map.createFromObjects('Enemies', 12, 'enemy', 0, true, true, enemies);
       enemies.setAll("body.allowGravity", false);
       enemies.setAll("body.immovable", true);
-      enemies.setAll("body.velocity.y", 150);
+      enemies.setAll("body.velocity.y", enemySpeed);
       enemies.setAll("body.velocityFactor", 1); // we'll invert this when we change directions
       enemies.forEach(function(enemy){
         enemy.body.setSize(8, 8, 12, 12);
@@ -201,7 +200,7 @@ function create(){
 function updateEnemies(){
   game.physics.arcade.collide(layer, enemies, function(enemy, layer){
    enemy.body.velocityFactor = -enemy.body.velocityFactor;
-   enemy.body.velocity.y = enemy.body.velocityFactor * 150;
+   enemy.body.velocity.y = enemy.body.velocityFactor * enemySpeed;
   });
 }
 

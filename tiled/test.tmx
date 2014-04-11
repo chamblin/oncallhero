@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="25" height="20" tilewidth="32" tileheight="32">
  <properties>
-  <property name="possiblePoints" value="10000"/>
+  <property name="possiblePoints" value="30000"/>
   <property name="seconds" value="30"/>
+  <property name="text" value="Sample Text"/>
  </properties>
  <tileset firstgid="1" name="Ground" tilewidth="32" tileheight="32">
   <image source="../assets/Ground.png" width="32" height="32"/>
@@ -29,7 +30,7 @@
  </tileset>
  <layer name="Ground" width="25" height="20" opacity="0.9">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2AUjIJRQE/ASAc8CgYXoEecAwBCzAAz
+   eJxjYBgFo2AUjIJRMApGAS0BIx0wAAzkABo=
   </data>
  </layer>
  <objectgroup name="Hero" width="25" height="20">
@@ -39,12 +40,5 @@
   <object gid="7" x="754" y="601"/>
  </objectgroup>
  <objectgroup name="Spikes" width="25" height="20"/>
- <objectgroup name="Enemies" width="25" height="20">
-  <object gid="12" x="96" y="512"/>
-  <object gid="12" x="192" y="512"/>
-  <object gid="12" x="288" y="512"/>
-  <object gid="12" x="384" y="512"/>
-  <object gid="12" x="480" y="544"/>
-  <object gid="12" x="576" y="576"/>
- </objectgroup>
+ <objectgroup name="Enemies" width="25" height="20"/>
 </map>
