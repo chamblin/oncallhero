@@ -171,7 +171,7 @@ function create(){
   game.physics.enable(hero);
   hero.body.bounce.y = 0.2;
   hero.body.collideWorldBounds = true;
-  hero.body.setSize(16, 28, 8, 4);
+  hero.body.setSize(16, 24, 8, 8);
   hero.animations.add('left', [0,1], 5, true);
   hero.animations.add('right', [3,4], 5, true);
 
@@ -250,13 +250,15 @@ function update() {
 
 function render() {
   //COLLISION DETECTION DEBUGGIN
-  //game.debug.body(hero);
-  /*spikes.forEach(function(spike){
+  /*
+  game.debug.body(hero);
+  spikes.forEach(function(spike){
     game.debug.body(spike);
   }, this);
   enemies.forEach(function(enemy){
     game.debug.body(enemy);
-  }, this);*/
+  }, this);
+  */
 }
 
 function win(){
