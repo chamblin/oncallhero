@@ -111,9 +111,9 @@ function loadLevel(resourceName){
     spikes.setAll("body.allowGravity", false);
     spikes.setAll("body.immovable", true);
     spikes.forEach(function(spike){
-      var isUpsideDown = !spike.body.onFloor();
+      var isUpsideDown = (spike.key == "spike_u");
       if(isUpsideDown){
-        spike.body.setSize(17, 28, 8, -4);
+        spike.body.setSize(17, 28, 8, 0);
       }
       else{
         spike.body.setSize(17, 28, 8, 4);
