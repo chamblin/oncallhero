@@ -8,6 +8,11 @@
         body {
             margin: 0;
         }
+        #game{
+          border: 5px solid black;
+          width: 800px;
+          height: 640px;
+        }
     </style>
 </head>
 <body>
@@ -15,7 +20,7 @@
 <script type="text/javascript">
 
 
-var game = new Phaser.Game(800, 640, Phaser.AUTO, '', { preload: preload,
+var game = new Phaser.Game(800, 640, Phaser.AUTO, 'game', { preload: preload,
                                                         create: create,
                                                         update: update,
                                                         render: render
@@ -317,5 +322,6 @@ function lose(){
 
 </script>
 
+<div id='game'></div>
 </body>
 </html>
