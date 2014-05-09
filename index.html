@@ -173,7 +173,7 @@ function create(){
   // configure hero
   hero = game.add.sprite(-1000, -1000, "hero");
   game.physics.enable(hero);
-  hero.body.bounce.y = 0.2;
+  hero.body.bounce.y = 0.05;
   hero.body.collideWorldBounds = true;
   hero.body.setSize(16, 24, 8, 8);
   hero.animations.add('left', [0,1], 5, true);
