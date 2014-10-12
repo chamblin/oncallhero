@@ -149,8 +149,8 @@ function loadLevel(resourceName){
       enemies.setAll("body.allowGravity", false);
       enemies.setAll("body.immovable", true);
       enemies.setAll("body.velocity.y", enemySpeed);
-      enemies.setAll("body.velocityFactor", 1); // we'll invert this when we change directions
       enemies.forEach(function(enemy){
+        enemy.body.velocityFactor = 1.0; // we'll invert this when we change directions
         enemy.body.setSize(8, 8, 12, 12);
       });
       game.physics.enable(enemies);
