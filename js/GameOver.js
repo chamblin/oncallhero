@@ -1,4 +1,8 @@
-var GameOver = function(game) { };
+var GameOver = function(game) {
+  var gameOverBitmap;
+  var gameOverText;
+  var gameOverScore;
+};
 
 GameOver.prototype = {
   preload: function() {
@@ -12,8 +16,7 @@ GameOver.prototype = {
 
   update: function() {
     if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)){
-      currentLevel = 0;
-      game.state.start("playLevel");
+      setTimeout(function() { game.state.start("titleScreen"); }, 100);
     }
   }
 }
