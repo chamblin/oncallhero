@@ -7,7 +7,6 @@ var PlayLevel = function(game) {
   var readyScreenLevelName;
   var readyScreenHelpText;
   var cursors;
-  var jumpSound;
   var winSound;
   var loseSound;
 
@@ -34,26 +33,19 @@ PlayLevel.prototype = {
       game.load.tilemap("level" + i, levels[i], null, Phaser.Tilemap.TILED_JSON);
     }
     game.load.image("ground_1x1", "assets/Ground.png");
-    game.load.spritesheet("hero", "assets/Hero.png", 32, 32);
     game.load.image("spike", "assets/Spike.png");
     game.load.image("spike_u", "assets/SpikeUpsideDown.png");
     game.load.image("enemy", "assets/Enemy.png");
     game.load.spritesheet("pager", "assets/Pager.png", 32, 32);
-    game.load.audio("jump", "assets/jump.ogg");
     game.load.audio("win", "assets/win.ogg");
     game.load.audio("lose", "assets/die.ogg");
+    this.hero = new Hero(game);
   },
 
   create: function(){
     game.physics.startSystem(Phaser.Physics.ARCADE);
     // configure hero
-    this.hero = game.add.sprite(-1000, -1000, "hero");
-    game.physics.enable(this.hero);
-    this.hero.body.bounce.y = 0.05;
-    this.hero.body.collideWorldBounds = true;
-    this.hero.body.setSize(16, 24, 8, 8);
-    this.hero.animations.add('left', [0,1], 5, true);
-    this.hero.animations.add('right', [3,4], 5, true);
+    this.hero.create();
 
     // configure pager
     this.pager = game.add.sprite(1000, 1000, "pager");
@@ -64,7 +56,6 @@ PlayLevel.prototype = {
     this.pager.animations.play('paging');
 
     // set up sfx
-    this.jumpSound = game.add.audio("jump");
     this.winSound = game.add.audio("win");
     this.loseSound = game.add.audio("lose");
 
@@ -76,36 +67,21 @@ PlayLevel.prototype = {
   },
 
   update: function() {
-    game.physics.arcade.collide(this.layer, this.hero);
+    this.hero.collideWith(this.layer);
+    this.hero.collideWith(this.pager, this.win, null, this);
+    this.hero.collideWith(this.spikes, this.lose, null, this);
+    this.hero.collideWith(this.enemies, this.lose, null, this);
     game.physics.arcade.collide(this.layer, this.pager);
     game.physics.arcade.collide(this.spikes, this.layer);
-    game.physics.arcade.collide(this.hero, this.pager, this.win, null, this);
-    game.physics.arcade.collide(this.hero, this.spikes, this.lose, null, this);
-    game.physics.arcade.collide(this.hero, this.enemies, this.lose, null, this);
 
-    this.hero.body.velocity.x = 0;
+    this.hero.stop();
     if(onReadyScreen && stop){
       if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)){
         this.beginLevel();
       }
     }
     else if(!stop){
-      if (this.cursors.left.isDown){
-        this.hero.body.velocity.x = -150;
-        this.hero.animations.play("left");
-      }
-      else if (this.cursors.right.isDown){
-        this.hero.body.velocity.x = 150;
-        this.hero.animations.play("right");
-      }
-      else{
-        this.hero.animations.stop();
-        this.hero.frame = 2;
-      }
-      if((this.cursors.up.isDown || game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) && this.hero.body.onFloor()){
-        this.jumpSound.play();
-        this.hero.body.velocity.y = -250;
-      }
+      this.hero.move(this.cursors);
 
       var millisSince = game.time.elapsedSince(this.levelBegin);
       this.pointsRemaining = Math.floor(this.possiblePoints * (((this.seconds * 1000) - millisSince)/(this.seconds * 1000)));
@@ -154,7 +130,7 @@ PlayLevel.prototype = {
 
   lose: function(){
     this.loseSound.play();
-    this.hero.kill();
+    this.hero.die();
     this.gameOver();
   },
 
@@ -190,18 +166,12 @@ PlayLevel.prototype = {
     //this.layer.debug = true
     this.map.setCollisionByExclusion([], true, this.layer);
 
-    // find hero/pager
-    var heroX = this.map.objects.Hero[0].x;
-    var heroY = this.map.objects.Hero[0].y;
-
-    var pagerX = this.map.objects.Pager[0].x;
-    var pagerY = this.map.objects.Pager[0].y;
-
     // position hero
-    this.hero.x = heroX;
-    this.hero.y = heroY - this.hero.height;
+    this.hero.place(this.map.objects.Hero[0]);
 
     // position pager
+    var pagerX = this.map.objects.Pager[0].x;
+    var pagerY = this.map.objects.Pager[0].y;
     this.pager.revive();
     this.pager.x = pagerX
     this.pager.y = pagerY - this.pager.height;
@@ -254,7 +224,7 @@ PlayLevel.prototype = {
   render: function() {
     //COLLISION DETECTION DEBUGGIN
     /*
-    game.debug.body(this.hero);
+    game.debug.body(this.hero.sprite);
     this.spikes.forEach(function(spike){
       game.debug.body(spike);
     }, this);
