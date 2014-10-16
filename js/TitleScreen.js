@@ -12,7 +12,7 @@ TitleScreen.prototype = {
   update: function() {
     if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)){
       currentLevel = 0;
-      game.state.start("playLevel");
+      game.state.start("playLevels");
     }
   }
 }

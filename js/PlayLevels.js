@@ -1,4 +1,4 @@
-var PlayLevel = function(game) {
+var PlayLevels = function(game) {
 
   // stage
   var map;
@@ -25,7 +25,7 @@ var PlayLevel = function(game) {
   var levelBegin;
 };
 
-PlayLevel.prototype = {
+PlayLevels.prototype = {
 
   preload: function() {
     game.stage.backgroundColor = "#7ec0ee";
