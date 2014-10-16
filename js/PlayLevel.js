@@ -54,7 +54,6 @@ PlayLevel.prototype = {
 
   update: function() {
     if(!this.levelBegin){
-      console.log("Level beginning");
       this.levelBegin = game.time.now;
     }
     this.hero.collideWith(this.layer);
