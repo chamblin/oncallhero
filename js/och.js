@@ -14,7 +14,8 @@ var currentLevel = 0;
 // initialize the game
 
 var game = new Phaser.Game(800, 640, Phaser.AUTO, 'game', null);
-game.state.add("playLevels", PlayLevels);
+game.state.add("playLevel", PlayLevel);
+game.state.add("readyScreen", ReadyScreen);
 game.state.add("gameOver", GameOver);
 game.state.add("titleScreen", TitleScreen);
 game.state.start("titleScreen");

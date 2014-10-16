@@ -1,11 +1,8 @@
-var PlayLevels = function(game) {
+var PlayLevel = function(game) {
 
   // stage
   var map;
   var layer;
-  var readyScreenBitmap;
-  var readyScreenLevelName;
-  var readyScreenHelpText;
   var cursors;
   var winSound;
   var loseSound;
@@ -25,20 +22,9 @@ var PlayLevels = function(game) {
   var levelBegin;
 };
 
-PlayLevels.prototype = {
+PlayLevel.prototype = {
 
   preload: function() {
-    game.stage.backgroundColor = "#7ec0ee";
-    for(var i = 0; i < levels.length; i++){
-      game.load.tilemap("level" + i, levels[i], null, Phaser.Tilemap.TILED_JSON);
-    }
-    game.load.image("ground_1x1", "assets/Ground.png");
-    game.load.image("spike", "assets/Spike.png");
-    game.load.image("spike_u", "assets/SpikeUpsideDown.png");
-    game.load.image("enemy", "assets/Enemy.png");
-    game.load.spritesheet("pager", "assets/Pager.png", 32, 32);
-    game.load.audio("win", "assets/win.ogg");
-    game.load.audio("lose", "assets/die.ogg");
     this.hero = new Hero(game);
   },
 
@@ -63,10 +49,14 @@ PlayLevels.prototype = {
     this.cursors = game.input.keyboard.createCursorKeys();
     this.remainingText = game.add.text(16, 16, 'remaining: 0', { font: '32px arial', fill: '#313131'});
     this.scoreText = game.add.text(16, 48, 'score: 0', { font: '12px arial', fill: '#313131'});
-    this.reset();
+    this.loadLevel("level" + currentLevel);
   },
 
   update: function() {
+    if(!this.levelBegin){
+      console.log("Level beginning");
+      this.levelBegin = game.time.now;
+    }
     this.hero.collideWith(this.layer);
     this.hero.collideWith(this.pager, this.win, null, this);
     this.hero.collideWith(this.spikes, this.lose, null, this);
@@ -75,38 +65,21 @@ PlayLevels.prototype = {
     game.physics.arcade.collide(this.spikes, this.layer);
 
     this.hero.stop();
-    if(onReadyScreen && stop){
-      if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)){
-        this.beginLevel();
-      }
-    }
-    else if(!stop){
-      this.hero.move(this.cursors);
+    this.hero.move(this.cursors);
 
-      var millisSince = game.time.elapsedSince(this.levelBegin);
-      this.pointsRemaining = Math.floor(this.possiblePoints * (((this.seconds * 1000) - millisSince)/(this.seconds * 1000)));
-      if(this.pointsRemaining <= 0){
-        this.lose();
-      }
-      this.remainingText.text = "remaining: " + ((this.pointsRemaining > 0) ? this.pointsRemaining : 0);
+    var millisSince = game.time.elapsedSince(this.levelBegin);
+    this.pointsRemaining = Math.floor(this.possiblePoints * (((this.seconds * 1000) - millisSince)/(this.seconds * 1000)));
+    if(this.pointsRemaining <= 0){
+      this.lose();
     }
+    this.remainingText.text = "remaining: " + ((this.pointsRemaining > 0) ? this.pointsRemaining : 0);
     if(this.enemies){
       this.updateEnemies();
     }
     this.scoreText.text = "score: " + score;
   },
 
-  reset: function() {
-    this.hero.revive();
-    currentLevel = 0;
-    score = 0;
-    this.scoreText.text = "score: 0";
-    this.loadLevel("level0");
-  },
-
   updateEnemies: function(){
-    //console.log("udpating");
-    //console.log(this.enemies.getFirstAlive().body.velocity);
     game.physics.arcade.collide(this.layer, this.enemies, function(enemy, layer){
      enemy.body.velocityFactor = -enemy.body.velocityFactor;
      enemy.body.velocity.y = enemy.body.velocityFactor * ENEMY_SPEED;
@@ -124,7 +97,7 @@ PlayLevels.prototype = {
       this.gameOver();
     }
     else{
-      this.loadLevel("level" + currentLevel);
+      game.state.start("readyScreen");
     }
   },
 
@@ -138,30 +111,9 @@ PlayLevels.prototype = {
     game.state.start("gameOver");
   },
 
-  beginLevel: function(){
-    this.readyScreenHelpText.destroy();
-    this.readyScreenLevelName.destroy();
-    this.readyScreenBitmap.destroy();
-    stop = false;
-    onReadyScreen = false;
-    this.levelBegin = game.time.now;
-  },
-
-  readyScreen: function(){
-    stop = true;
-    onReadyScreen = true;
-    this.readyScreenBitmap = game.add.graphics(0, 0);
-    this.readyScreenBitmap.beginFill(0);
-    this.readyScreenBitmap.drawRect(0, 0, 900, 800);
-    this.readyScreenLevelName = game.add.text(16, 16, 'Level ' + (currentLevel + 1), { font: '32px arial', fill: '#FFFFFF'});
-    var text = this.map.properties.text || "";
-    this.readyScreenHelpText = game.add.text(16, 64, text + "\n\nPress Space to Begin", {font: '12px arial', fill: '#FFFFFF'});
-  },
-
   loadLevel: function(resourceName){
     this.map = game.add.tilemap(resourceName);
     this.map.addTilesetImage('Ground', 'ground_1x1');
-    if(this.layer){ this.layer.destroy(); }
     this.layer = this.map.createLayer("Ground");
     //this.layer.debug = true
     this.map.setCollisionByExclusion([], true, this.layer);
@@ -172,7 +124,6 @@ PlayLevels.prototype = {
     // position pager
     var pagerX = this.map.objects.Pager[0].x;
     var pagerY = this.map.objects.Pager[0].y;
-    this.pager.revive();
     this.pager.x = pagerX
     this.pager.y = pagerY - this.pager.height;
 
@@ -217,20 +168,6 @@ PlayLevels.prototype = {
     this.possiblePoints = parseInt(this.map.properties.possiblePoints);
     this.seconds = parseInt(this.map.properties.seconds);
     this.pointsRemaining = this.possiblePoints;
-
-    this.readyScreen();
-  },
-
-  render: function() {
-    //COLLISION DETECTION DEBUGGIN
-    /*
-    game.debug.body(this.hero.sprite);
-    this.spikes.forEach(function(spike){
-      game.debug.body(spike);
-    }, this);
-    this.enemies.forEach(function(enemy){
-      game.debug.body(enemy);
-    }, this);
-    */
+    this.levelBegin = false;
   }
 }
